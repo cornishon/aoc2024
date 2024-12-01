@@ -7,7 +7,7 @@ import "core:sys/posix"
 import "solutions"
 
 Args :: struct {
-	day:     int `args:"" usage:"Day (1-25)"`,
+	day:     int `args:"required" usage:"Day (1-25)"`,
 	part:    int `args:"" usage:"Part (1 or 2), leave unset to run both"`,
 	session: string `args:"" usage:"custom cookie for authentication"`,
 }
@@ -31,9 +31,7 @@ arg_checker :: proc(model: rawptr, name: string, value: any, args_tag: string) -
 main :: proc() {
 	defer free_all(context.temp_allocator)
 	flags.register_flag_checker(arg_checker)
-	args := Args {
-		day = 1,
-	}
+	args := Args{}
 	flags.parse_or_exit(&args, os.args)
 	input_path := fmt.tprintf("inputs/day%v", args.day)
 	if !os.exists(input_path) {
