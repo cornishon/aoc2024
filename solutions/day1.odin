@@ -19,8 +19,7 @@ day1_part2 :: proc(input: string) -> (result: int) {
 	slice.sort(column1)
 	slice.sort(column2)
 	for num in column1 {
-		idx, found := slice.binary_search(column2, num)
-		found or_continue
+		idx := slice.binary_search(column2, num) or_continue
 		count := 1
 		for i := idx - 1; i >= 0 && column2[i] == num; i -= 1 {
 			count += 1
