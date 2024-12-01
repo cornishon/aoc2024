@@ -13,7 +13,7 @@ table: [25][2]Solution
 
 @(init, private)
 day1 :: proc() {
-	// table[0] = {day1_part1, day1_part2}
+	table[0] = {day1_part1, day1_part2}
 	// table[1] = {day2_part1, day2_part2}
 	// table[2] = {day3_part1, day3_part2}
 	// table[3] = {day4_part1, day4_part2}
