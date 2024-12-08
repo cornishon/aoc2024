@@ -28,3 +28,13 @@ chop_prefix :: proc(s: ^string, prefix: string) -> (ok: bool) {
 }
 
 
+parse_ints :: proc(s: string, out: ^[dynamic]int, sep := ",") -> (ok: bool) {
+	entry := s
+	for entry != "" {
+		a := chop_int(&entry) or_return
+		append(out, a)
+		chop_prefix(&entry, sep)
+	}
+	return true
+}
+

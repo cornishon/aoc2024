@@ -14,7 +14,7 @@ day5_part1 :: proc(input: string) -> (result: int) {
 
 	values := make([dynamic]int, context.temp_allocator)
 	for line in strings.split_lines_iterator(&s2) {
-		assert(parse_list(line, &values))
+		assert(parse_ints(line, &values))
 		if validate(values[:], &rules) {
 			result += values[len(values) / 2]
 		}
@@ -33,7 +33,7 @@ day5_part2 :: proc(input: string) -> (result: int) {
 
 	values := make([dynamic]int, context.temp_allocator)
 	for line in strings.split_lines_iterator(&s2) {
-		assert(parse_list(line, &values))
+		assert(parse_ints(line, &values))
 		if !validate(values[:], &rules) {
 			sort(values[:], &rules)
 			result += values[len(values) / 2]
@@ -45,8 +45,8 @@ day5_part2 :: proc(input: string) -> (result: int) {
 }
 
 @(private="file")
-validate :: proc(values: []int, ordering: ^Ordering_Rules) -> bool {
-	context.user_ptr = ordering
+validate :: proc(values: []int, rules: ^Ordering_Rules) -> bool {
+	context.user_ptr = rules
 	return slice.is_sorted_by_cmp(values, cmp)
 }
 
@@ -89,16 +89,6 @@ parse_rules :: proc(s: string) -> (rules: Ordering_Rules, ok: bool) {
 	return
 }
 
-parse_list :: proc(s: string, out: ^[dynamic]int) -> (ok: bool) {
-	entry := s
-	for entry != "" {
-		a := chop_int(&entry) or_return
-		append(out, a)
-		chop_prefix(&entry, ",")
-	}
-	return true
-}
-
 import "core:testing"
 
 @(test)
@@ -111,6 +101,7 @@ test_day5_part2 :: proc(t: ^testing.T) {
 	testing.expect_value(t, day5_part2(SAMPLE), 123)
 }
 
+@(private="file")
 SAMPLE ::
 	"47|53\n" +
 	"97|13\n" +
