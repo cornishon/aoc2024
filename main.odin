@@ -121,7 +121,7 @@ main :: proc() {
 	case 0:
 		dur1 := solutions.solve(args.day, 1, input)
 		dur2 := solutions.solve(args.day, 2, input)
-		fmt.printfln("Total time: %v", dur1 + dur2)
+		fmt.printfln("Day %v total time: %v", args.day, dur1 + dur2)
 	case:
 		solutions.solve(args.day, args.part, input)
 	}
