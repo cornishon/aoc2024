@@ -1,8 +1,13 @@
-package aoc2024
+package day8
 
 import "core:strings"
+import "../utils"
 
-day8_part1 :: proc(input: string) -> (result: int) {
+main :: proc() {
+	utils.solve_day(8, part1, part2)
+}
+
+part1 :: proc(input: string) -> (result: int) {
 	nodes := parse_node_map(input, context.temp_allocator)
 	an := antinodes(nodes, context.temp_allocator)
 	for n in an {
@@ -11,7 +16,7 @@ day8_part1 :: proc(input: string) -> (result: int) {
 	return
 }
 
-day8_part2 :: proc(input: string) -> (result: int) {
+part2 :: proc(input: string) -> (result: int) {
 	nodes := parse_node_map(input, context.temp_allocator)
 	an := antinodes2(nodes, context.temp_allocator)
 	for n in an {
@@ -95,13 +100,13 @@ antinodes2 :: proc(nodes: Node_Map, allocator := context.allocator) -> []bool #n
 import "core:testing"
 
 @(test)
-test_day8_part1 :: proc(t: ^testing.T) {
-	testing.expect_value(t, day8_part1(SAMPLE), 14)
+test_part1 :: proc(t: ^testing.T) {
+	testing.expect_value(t, part1(SAMPLE), 14)
 }
 
 @(test)
-test_day8_part2 :: proc(t: ^testing.T) {
-	testing.expect_value(t, day8_part2(SAMPLE), 34)
+test_part2 :: proc(t: ^testing.T) {
+	testing.expect_value(t, part2(SAMPLE), 34)
 }
 
 @(private="file")

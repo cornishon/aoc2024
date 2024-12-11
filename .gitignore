@@ -1,4 +1,7 @@
 aoc2024
 aoc.session
-inputs/*
 *.bin
+bin/
+day*/*.txt
+day[0-9]/day[0-9]
+day[0-9][0-9]/day[0-9][0-9]

@@ -1,8 +1,13 @@
-package aoc2024
+package day4
 
 import "core:strings"
+import "../utils"
 
-day4_part1 :: proc(input: string) -> (result: int) {
+main :: proc() {
+	utils.solve_day(4, part1, part2)
+}
+
+part1 :: proc(input: string) -> (result: int) {
 	p := strings.split_lines(input, context.temp_allocator)
 	if len(p) == 0 { return 0}
 	if len(p[0]) == 0 { return 0}
@@ -37,7 +42,7 @@ xmas_at :: proc(puzzle: []string, row: int, col: int) -> (count: int) {
 	return
 }
 
-day4_part2 :: proc(input: string) -> (result: int) {
+part2 :: proc(input: string) -> (result: int) {
 	p := strings.split_lines(input, context.temp_allocator)
 	if len(p) < 3 { return 0 }
 	if len(p[0]) < 3 { return 0 }
@@ -57,9 +62,9 @@ day4_part2 :: proc(input: string) -> (result: int) {
 import "core:testing"
 
 @(test)
-test_day4_part1 :: proc(t: ^testing.T) {
+test_part1 :: proc(t: ^testing.T) {
 	testing.expect_value(t,
-		day4_part1(
+		part1(
 			"MMMSXXMASM\n" +
 			"MSAMXMSMSA\n" +
 			"AMXSXMAAMM\n" +
@@ -77,9 +82,9 @@ test_day4_part1 :: proc(t: ^testing.T) {
 }
 
 @(test)
-test_day4_part2 :: proc(t: ^testing.T) {
+test_part2 :: proc(t: ^testing.T) {
 	testing.expect_value(t,
-		day4_part2(
+		part2(
 			"MMMSXXMASM\n" +
 			"MSAMXMSMSA\n" +
 			"AMXSXMAAMM\n" +

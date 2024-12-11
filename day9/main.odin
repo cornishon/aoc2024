@@ -1,14 +1,19 @@
-package aoc2024
+package day9
 
 import "core:slice"
+import "../utils"
 
-day9_part1 :: proc(input: string) -> (result: int) {
+main :: proc() {
+	utils.solve_day(9, part1, part2)
+}
+
+part1 :: proc(input: string) -> (result: int) {
 	fm := parse_file_map(input, context.temp_allocator)
 	compact := compactify(fm, context.temp_allocator)
 	return checksum(compact)
 }
 
-day9_part2 :: proc(input: string) -> (result: int) {
+part2 :: proc(input: string) -> (result: int) {
 	fm := parse_file_map(input, context.temp_allocator)
 	compact := compactify2(fm, context.temp_allocator)
 	return checksum(compact)
@@ -120,13 +125,13 @@ parse_file_map :: proc(s: string, allocator := context.allocator) -> []File_Entr
 import "core:testing"
 
 @(test)
-test_day9_part1 :: proc(t: ^testing.T) {
-	testing.expect_value(t, day9_part1(SAMPLE), 1928)
+test_part1 :: proc(t: ^testing.T) {
+	testing.expect_value(t, part1(SAMPLE), 1928)
 }
 
 @(test)
-test_day9_part2 :: proc(t: ^testing.T) {
-	testing.expect_value(t, day9_part2(SAMPLE), 2858)
+test_part2 :: proc(t: ^testing.T) {
+	testing.expect_value(t, part2(SAMPLE), 2858)
 }
 
 @(private="file")

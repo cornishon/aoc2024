@@ -1,8 +1,13 @@
-package aoc2024
+package day3
 
 import "core:strings"
+import "../utils"
 
-day3_part1 :: proc(input: string) -> (result: int) {
+main :: proc() {
+	utils.solve_day(3, part1, part2)
+}
+
+part1 :: proc(input: string) -> (result: int) {
 	s := input
 	for advance_past_mul(&s) {
 		x, y := parse_mul_args(&s) or_continue
@@ -11,7 +16,7 @@ day3_part1 :: proc(input: string) -> (result: int) {
 	return
 }
 
-day3_part2 :: proc(input: string) -> (result: int) {
+part2 :: proc(input: string) -> (result: int) {
 	s := input
 	mul_enabled := true
 	for {
@@ -49,11 +54,11 @@ advance_past_mul :: proc(s: ^string) -> (ok: bool) {
 parse_mul_args :: proc(s: ^string) -> (x, y: int, ok: bool) {
 	t := s^
 
-	chop_prefix(&t, "(") or_return
-	x = chop_int(&t) or_return
-	chop_prefix(&t, ",") or_return
-	y = chop_int(&t) or_return
-	chop_prefix(&t, ")") or_return
+	utils.chop_prefix(&t, "(") or_return
+	x = utils.chop_int(&t) or_return
+	utils.chop_prefix(&t, ",") or_return
+	y = utils.chop_int(&t) or_return
+	utils.chop_prefix(&t, ")") or_return
 
 	s^ = t
 	ok = true
@@ -83,17 +88,17 @@ test_parse_args :: proc(t: ^testing.T) {
 }
 
 @(test)
-test_day3_part1 :: proc(t: ^testing.T) {
+test_part1 :: proc(t: ^testing.T) {
 	testing.expect_value(t,
-		day3_part1("xmul(2,4)%&mul[3,7]!@^do_not_mul(5,5)+mul(32,64]then(mul(11,8)mul(8,5))"),
+		part1("xmul(2,4)%&mul[3,7]!@^do_not_mul(5,5)+mul(32,64]then(mul(11,8)mul(8,5))"),
 		161,
 	)
 }
 
 @(test)
-test_day3_part2 :: proc(t: ^testing.T) {
+test_part2 :: proc(t: ^testing.T) {
 	testing.expect_value(t,
-		day3_part2("xmul(2,4)&mul[3,7]!^don't()_mul(5,5)+mul(32,64](mul(11,8)undo()?mul(8,5))"),
+		part2("xmul(2,4)&mul[3,7]!^don't()_mul(5,5)+mul(32,64](mul(11,8)undo()?mul(8,5))"),
 		48,
 	)
 }

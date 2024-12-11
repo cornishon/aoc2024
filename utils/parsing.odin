@@ -1,4 +1,4 @@
-package aoc2024
+package utils
 
 import "core:strconv"
 import "core:strings"

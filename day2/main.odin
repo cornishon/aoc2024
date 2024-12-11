@@ -1,10 +1,15 @@
-package aoc2024
+package day2
 
 import "core:slice"
 import "core:strconv"
 import "core:strings"
+import "../utils"
 
-day2_part1 :: proc(input: string) -> (result: int) {
+main :: proc() {
+	utils.solve_day(2, part1, part2)
+}
+
+part1 :: proc(input: string) -> (result: int) {
 	lines := input
 	context.allocator = context.temp_allocator
 	for line in strings.split_lines_iterator(&lines) {
@@ -14,7 +19,7 @@ day2_part1 :: proc(input: string) -> (result: int) {
 	return
 }
 
-day2_part2 :: proc(input: string) -> (result: int) {
+part2 :: proc(input: string) -> (result: int) {
 	lines := input
 	context.allocator = context.temp_allocator
 	for line in strings.split_lines_iterator(&lines) {
@@ -103,8 +108,8 @@ test_is_safe_adjusted :: proc(t: ^testing.T) {
 }
 
 @(test)
-test_day2_part1 :: proc(t: ^testing.T) {
-	testing.expect_value(t, day2_part1(
+test_part1 :: proc(t: ^testing.T) {
+	testing.expect_value(t, part1(
 		"7 6 4 2 1\n" +
 		"1 2 7 8 9\n" +
 		"9 7 6 2 1\n" +
@@ -116,8 +121,8 @@ test_day2_part1 :: proc(t: ^testing.T) {
 }
 
 @(test)
-test_day2_part2 :: proc(t: ^testing.T) {
-	testing.expect_value(t, day2_part2(
+test_part2 :: proc(t: ^testing.T) {
+	testing.expect_value(t, part2(
 		"7 6 4 2 1\n" +
 		"1 2 7 8 9\n" +
 		"9 7 6 2 1\n" +

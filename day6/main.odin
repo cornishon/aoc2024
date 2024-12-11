@@ -1,10 +1,15 @@
-package aoc2024
+package day6
 
 import "core:fmt"
 import "core:mem"
 import "core:strings"
+import "../utils"
 
-day6_part1 :: proc(input: string) -> (result: int) {
+main :: proc() {
+	utils.solve_day(6, part1, nil)
+}
+
+part1 :: proc(input: string) -> (result: int) {
 	start_x, start_y, grid := parse_grid(input, context.temp_allocator)
 	visited := simulate(grid, start_x, start_y, .North, context.temp_allocator)
 	for row in visited.rows {
@@ -194,8 +199,8 @@ test_parse_grid :: proc(t: ^testing.T) {
 }
 
 @(test)
-test_day6_part1 :: proc(t: ^testing.T) {
-	testing.expect_value(t, day6_part1(SAMPLE), 41)
+test_part1 :: proc(t: ^testing.T) {
+	testing.expect_value(t, part1(SAMPLE), 41)
 }
 
 @(private="file")

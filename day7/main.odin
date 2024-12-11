@@ -1,15 +1,19 @@
-package aoc2024
+package day7
 
 import math "core:math"
 import "core:slice"
 import "core:strings"
+import "../utils"
 
+main :: proc() {
+	utils.solve_day(7, part1, part2)
+}
 
-day7_part1 :: proc(input: string) -> (result: int) {
+part1 :: proc(input: string) -> (result: int) {
 	return do_part(input, false)
 }
 
-day7_part2 :: proc(input: string) -> (result: int) {
+part2 :: proc(input: string) -> (result: int) {
 	return do_part(input, true)
 }
 
@@ -38,9 +42,9 @@ do_part :: proc(input: string, $CONCAT: bool) -> (result: int) {
 @(private="file")
 parse_line :: proc(line: string, out: ^[dynamic]int) -> (test_value: int, ok: bool) {
 	s := line
-	test_value = chop_int(&s) or_return
-	chop_prefix(&s, ": ") or_return
-	parse_ints(s, out, " ") or_return
+	test_value = utils.chop_int(&s) or_return
+	utils.chop_prefix(&s, ": ") or_return
+	utils.parse_ints(s, out, " ") or_return
 	ok = true
 	return
 }
@@ -79,13 +83,13 @@ test_operators :: proc(t: ^testing.T) {
 }
 
 @(test)
-test_day7_part1 :: proc(t: ^testing.T) {
-	testing.expect_value(t, day7_part1(SAMPLE), 3749)
+test_part1 :: proc(t: ^testing.T) {
+	testing.expect_value(t, part1(SAMPLE), 3749)
 }
 
 @(test)
-test_day7_part2 :: proc(t: ^testing.T) {
-	testing.expect_value(t, day7_part2(SAMPLE), 11387)
+test_part2 :: proc(t: ^testing.T) {
+	testing.expect_value(t, part2(SAMPLE), 11387)
 }
 
 @(private="file")

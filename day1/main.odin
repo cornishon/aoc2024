@@ -1,10 +1,15 @@
-package aoc2024
+package day1
 
 import "core:slice"
 import "core:strconv"
 import "core:strings"
+import "../utils"
 
-day1_part1 :: proc(input: string) -> (result: int) {
+main :: proc() {
+	utils.solve_day(1, part1, part2)
+}
+
+part1 :: proc(input: string) -> (result: int) {
 	column1, column2 := parse_columns(input, context.temp_allocator)
 	slice.sort(column1)
 	slice.sort(column2)
@@ -14,7 +19,7 @@ day1_part1 :: proc(input: string) -> (result: int) {
 	return
 }
 
-day1_part2 :: proc(input: string) -> (result: int) {
+part2 :: proc(input: string) -> (result: int) {
 	column1, column2 := parse_columns(input, context.temp_allocator)
 	slice.sort(column1)
 	slice.sort(column2)
@@ -51,13 +56,13 @@ parse_columns :: proc(input: string, allocator := context.allocator) -> ([]int, 
 import "core:testing"
 
 @(test)
-test_day1_part1 :: proc(t: ^testing.T) {
-	testing.expect_value(t, day1_part1("3   4\n4   3\n2   5\n1   3\n3   9\n3   3"), 11)
+test_part1 :: proc(t: ^testing.T) {
+	testing.expect_value(t, part1("3   4\n4   3\n2   5\n1   3\n3   9\n3   3"), 11)
 	free_all(context.temp_allocator)
 }
 
 @(test)
-test_day1_part2 :: proc(t: ^testing.T) {
-	testing.expect_value(t, day1_part2("3   4\n4   3\n2   5\n1   3\n3   9\n3   3"), 31)
+test_part2 :: proc(t: ^testing.T) {
+	testing.expect_value(t, part2("3   4\n4   3\n2   5\n1   3\n3   9\n3   3"), 31)
 	free_all(context.temp_allocator)
 }

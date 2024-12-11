@@ -1,11 +1,16 @@
-package aoc2024
+package day5
 
 import "core:slice"
 import "core:strings"
+import "../utils"
+
+main :: proc() {
+	utils.solve_day(5, part1, part2)
+}
 
 Ordering_Rules :: [100]bit_set[0..<100]
 
-day5_part1 :: proc(input: string) -> (result: int) {
+part1 :: proc(input: string) -> (result: int) {
 	s1, m, s2 := strings.partition(input, "\n\n")
 	assert(m == "\n\n")
 
@@ -14,7 +19,7 @@ day5_part1 :: proc(input: string) -> (result: int) {
 
 	values := make([dynamic]int, context.temp_allocator)
 	for line in strings.split_lines_iterator(&s2) {
-		assert(parse_ints(line, &values))
+		assert(utils.parse_ints(line, &values))
 		if validate(values[:], &rules) {
 			result += values[len(values) / 2]
 		}
@@ -24,7 +29,7 @@ day5_part1 :: proc(input: string) -> (result: int) {
 	return
 }
 
-day5_part2 :: proc(input: string) -> (result: int) {
+part2 :: proc(input: string) -> (result: int) {
 	s1, m, s2 := strings.partition(input, "\n\n")
 	assert(m == "\n\n")
 
@@ -33,7 +38,7 @@ day5_part2 :: proc(input: string) -> (result: int) {
 
 	values := make([dynamic]int, context.temp_allocator)
 	for line in strings.split_lines_iterator(&s2) {
-		assert(parse_ints(line, &values))
+		assert(utils.parse_ints(line, &values))
 		if !validate(values[:], &rules) {
 			sort(values[:], &rules)
 			result += values[len(values) / 2]
@@ -71,9 +76,9 @@ cmp :: proc(v1: int, v2: int) -> slice.Ordering {
 @(private="file")
 parse_single_rule :: proc(s: string) -> (a, b: int, ok: bool) {
 	entry := s
-	a = chop_int(&entry) or_return
-	chop_prefix(&entry, "|") or_return
-	b = chop_int(&entry) or_return
+	a = utils.chop_int(&entry) or_return
+	utils.chop_prefix(&entry, "|") or_return
+	b = utils.chop_int(&entry) or_return
 	ok = entry == ""
 	return
 }
@@ -92,13 +97,13 @@ parse_rules :: proc(s: string) -> (rules: Ordering_Rules, ok: bool) {
 import "core:testing"
 
 @(test)
-test_day5_part1 :: proc(t: ^testing.T) {
-	testing.expect_value(t, day5_part1(SAMPLE), 143)
+test_part1 :: proc(t: ^testing.T) {
+	testing.expect_value(t, part1(SAMPLE), 143)
 }
 
 @(test)
-test_day5_part2 :: proc(t: ^testing.T) {
-	testing.expect_value(t, day5_part2(SAMPLE), 123)
+test_part2 :: proc(t: ^testing.T) {
+	testing.expect_value(t, part2(SAMPLE), 123)
 }
 
 @(private="file")

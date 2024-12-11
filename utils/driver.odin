@@ -1,24 +1,18 @@
-package main
+package utils
 
 import "core:flags"
 import "core:fmt"
 import "core:os"
 import "core:sys/posix"
-import "solutions"
+import "core:time"
 
 Args :: struct {
-	day:     int `args:"required" usage:"Day (1-25)"`,
-	part:    int `args:"" usage:"Part (1 or 2), leave unset to run both"`,
-	session: string `args:"" usage:"custom cookie for authentication"`,
+	part:       int    `args:"" usage:"Part (1 or 2), leave unset to run both"`,
+	session:    string `args:"" usage:"custom cookie for authentication for automatic input download"`,
+	input_path: string `args:"pos=0" usage:"use given file as input, if not given, input will be automatically downloaded"`,
 }
 
 arg_checker :: proc(model: rawptr, name: string, value: any, args_tag: string) -> (error: string) {
-	if name == "day" {
-		v := value.(int)
-		if !(1 <= v && v <= 25) {
-			error = "Valid day range is 1 ..= 25"
-		}
-	}
 	if name == "part" {
 		v := value.(int)
 		if !(1 <= v && v <= 2) {
@@ -28,15 +22,30 @@ arg_checker :: proc(model: rawptr, name: string, value: any, args_tag: string) -
 	return
 }
 
-main :: proc() {
+Solution_Proc :: #type proc(string) -> int
+
+solve_part :: proc(part_idx: int, input: string, part: Solution_Proc) -> time.Duration {
+	if part == nil {
+		fmt.printfln("Part %v: (not implemented)", part_idx)
+		return 0
+	}
+	t := time.tick_now()
+	result := part(input)
+	elapsed := time.tick_since(t)
+	fmt.printfln("Part %v: %v (took %v)", part_idx, result, elapsed)
+	return elapsed
+}
+
+solve_day :: proc(day: int, part1, part2: Solution_Proc) {
 	defer free_all(context.temp_allocator)
 	flags.register_flag_checker(arg_checker)
 	args := Args{}
 	flags.parse_or_exit(&args, os.args)
-	input_path := fmt.tprintf("inputs/day%v", args.day)
-	if !os.exists(input_path) {
+	should_download := args.input_path == ""
+	if should_download do args.input_path = "input.txt"
+	if should_download && !os.exists(args.input_path) {
 		if args.session == "" {
-			session, ok := os.read_entire_file("aoc.session")
+			session, ok := os.read_entire_file("../aoc.session")
 			if ok {
 				args.session = string(session)
 			}
@@ -45,10 +54,7 @@ main :: proc() {
 			fmt.eprintln(
 				"Error: To download the input you must specify a session cookie in 'aoc.session' file or through the '-session' flag",
 			)
-			fmt.eprintfln(
-				"Or just download the file manually and save int in inputs/day%v",
-				args.day,
-			)
+			fmt.eprintfln("Or just download the file manually and save int in %v", args.input_path)
 			os.exit(1)
 		}
 
@@ -64,11 +70,11 @@ main :: proc() {
 			err := os.execvp(
 				"curl",
 				{
-					fmt.tprintf("https://adventofcode.com/2024/day/%v/input", args.day),
+					fmt.tprintf("https://adventofcode.com/2024/day/%v/input", day),
 					"--cookie",
 					fmt.tprintf("session=%v", args.session),
 					"-o",
-					input_path,
+					args.input_path,
 				},
 			)
 			if err != nil {
@@ -105,9 +111,9 @@ main :: proc() {
 		}
 	}
 
-	input_bytes, err := os.read_entire_file_or_err(input_path)
+	input_bytes, err := os.read_entire_file_or_err(args.input_path)
 	if err != nil {
-		fmt.eprintln("Error reading input:", err)
+		fmt.eprintfln("Error reading input file %v: %v", args.input_path, err)
 		os.exit(1)
 	}
 
@@ -115,14 +121,19 @@ main :: proc() {
 	if input[len(input) - 1] == '\n' {
 		input = input[:len(input) - 1]
 	}
-	defer delete(input)
+
+	fmt.println()
 
 	switch args.part {
 	case 0:
-		dur1 := solutions.solve(args.day, 1, input)
-		dur2 := solutions.solve(args.day, 2, input)
-		fmt.printfln("Day %v total time: %v", args.day, dur1 + dur2)
-	case:
-		solutions.solve(args.day, args.part, input)
+		dur1 := solve_part(1, input, part1)
+		dur2 := solve_part(2, input, part2)
+		fmt.printfln("Day % 2v total time: %v", day, dur1 + dur2)
+	case 1:
+		solve_part(1, input, part1)
+	case 2:
+		solve_part(2, input, part2)
 	}
+
+	return
 }

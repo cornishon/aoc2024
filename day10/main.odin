@@ -1,8 +1,13 @@
-package aoc2024
+package day10
 
 import "core:strings"
+import "../utils"
 
-day10_part1 :: proc(input: string) -> (result: int) {
+main :: proc() {
+	utils.solve_day(10, part1, part2)
+}
+
+part1 :: proc(input: string) -> (result: int) {
 	hm := parse_height_map(input)
 	defer delete(hm.values)
 	for v, i in hm.values {
@@ -14,7 +19,7 @@ day10_part1 :: proc(input: string) -> (result: int) {
 	return
 }
 
-day10_part2 :: proc(input: string) -> (result: int) {
+part2 :: proc(input: string) -> (result: int) {
 	hm := parse_height_map(input)
 	defer delete(hm.values)
 	for v, i in hm.values {
@@ -112,13 +117,13 @@ trailhead_rating :: proc(hm: Height_Map, trailhead: int, allocator := context.al
 import "core:testing"
 
 @(test)
-test_day10_part1 :: proc(t: ^testing.T) {
-	testing.expect_value(t, day10_part1(SAMPLE), 36)
+test_part1 :: proc(t: ^testing.T) {
+	testing.expect_value(t, part1(SAMPLE), 36)
 }
 
 @(test)
-test_day10_part2 :: proc(t: ^testing.T) {
-	testing.expect_value(t, day10_part2(SAMPLE), 81)
+test_part2 :: proc(t: ^testing.T) {
+	testing.expect_value(t, part2(SAMPLE), 81)
 }
 
 @(private="file")
